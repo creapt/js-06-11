@@ -91,23 +91,25 @@ export default {
     })
     .then(data => {
      if (data.result) {
-      if (item.quantity > 0) {
-       item.quantity++;
+      const cartItem = this.cartGoods.find(
+       ({ id_product }) => id_product === item.id_product
+      );
+      if (cartItem !== undefined) {
+       cartItem.quantity += 1;
       } else {
-       item.quantity++;
-       this.cartGoods.push(item);
+       this.cartGoods.push({ ...item, quantity: 1 });
       }
      } else {
       console.error("Cant add item to cart");
      }
     })
     .catch(err => {
-     console.error("Ошибка! " + err);
+     console.error(err);
     });
   },
   removeItem(item) {
    fetch(`${API}/removeToCart`, {
-    method: "POST",
+    method: "DELETE",
     body: JSON.stringify({ item }),
     headers: {
      "Content-Type": "application/json"
@@ -141,10 +143,24 @@ export default {
    if (item.quantity != 0) {
     item.quantity--;
    }
-  },
+    fetch(`${API}/reduceItem`, {
+     method: "POST",
+     body: JSON.stringify({ item }),
+     headers: {
+      "Content-Type": "application/json"
+     }
+    }).then(() => {});
+   },
   addItem(item) {
+   console.log("cli");
    item.quantity++;
-   console.log(this.cartGoods);
+   fetch(`${API}/addItem`, {
+    method: "POST",
+    body: JSON.stringify({ item }),
+    headers: {
+     "Content-Type": "application/json"
+    }
+   }).then(() => {});
   }
  }
 };

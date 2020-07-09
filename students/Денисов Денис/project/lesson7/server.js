@@ -41,44 +41,75 @@ app.post('/addToCart', (request, response) => {
             response.json({ result: 0 });
             return;
         }
-        const cart = JSON.parse(data);
-        if (request.body.item.quantity == 0) {
-            request.body.item.quantity++;
-            cart.push(request.body.item);
-            fs.writeFile('./cart.json', JSON.stringify(cart), (err) => {
-                if (err) {
-                    response.json({ result: 0 });
-                    return;
-                }
-                response.json({ result: 1 });
-            });
-        } else {
-            const index = cart.findIndex(elem => {
-                return elem.id_product == request.body.item.id_product
-            })
-            cart[index].quantity++;
 
-            fs.writeFile('./cart.json', JSON.stringify(cart), (err) => {
-                if (err) {
-                    response.json({ result: 0 });
-                    return;
-                }
-                response.json({ result: 1 });
-            });
+        const cart = JSON.parse(data);
+
+        const item = cart.find(({ id_product }) => id_product === request.body.item.id_product);
+        if (item !== undefined) {
+            item.quantity += 1;
+        } else {
+            cart.push({...request.body.item, quantity: 1 });
         }
-        const date = new Date()
-        const actionDataObj = {
-            product_name: request.body.item.product_name,
-            action: "Товар добавлен",
-            time: `В ${date.getHours()} часов ${date.getMinutes()} минут`
+
+        log('add', request.body.item.product_name);
+
+        fs.writeFile('./cart.json', JSON.stringify(cart), (err) => {
+            if (err) {
+                response.json({ result: 0 });
+                return;
+            }
+
+            response.json({ result: 1 });
+        });
+    });
+});
+
+app.post('/addItem', (request, response) => {
+    fs.readFile('./cart.json', 'utf-8', (err, data) => {
+        if (err) {
+            console.log('Error!', err);
+            response.json({ result: 0 });
+            return;
         }
-        actionDataArr.push(actionDataObj)
-        console.log(actionDataArr)
-        fs.writeFileSync('./static.json', JSON.stringify(actionDataArr))
+        const increment = JSON.parse(data);
+        const item = increment.find(elem => {
+            return elem.id_product == request.body.item.id_product
+        })
+        if (item !== undefined) {
+            item.quantity = item.quantity + 1;
+        }
+        fs.writeFile('./cart.json', JSON.stringify(increment), (err) => {
+            if (err) {
+                response.json({ result: 0 });
+                return;
+            }
+        });
+    })
+});
+app.post('/reduceItem', (request, response) => {
+    fs.readFile('./cart.json', 'utf-8', (err, data) => {
+        if (err) {
+            console.log('Error!', err);
+            response.json({ result: 0 });
+            return;
+        }
+        const increment = JSON.parse(data);
+        const item = increment.find(elem => {
+            return elem.id_product == request.body.item.id_product
+        })
+        if (item !== undefined) {
+            item.quantity = item.quantity - 1;
+        }
+        fs.writeFile('./cart.json', JSON.stringify(increment), (err) => {
+            if (err) {
+                response.json({ result: 0 });
+                return;
+            }
+        });
     })
 });
 
-app.post('/removeToCart', (request, response) => {
+app.delete('/removeToCart', (request, response) => {
     fs.readFile('./cart.json', 'utf-8', (err, data) => {
         if (err) {
             console.log('Error!', err);
@@ -86,10 +117,15 @@ app.post('/removeToCart', (request, response) => {
             return;
         }
         const cart = JSON.parse(data);
-        const index = cart.findIndex(elem => {
-            request.body.item.id_product === elem.id_product
+        const index = cart.findIndex(({ id_product }) => {
+            return request.body.item.id_product === id_product
         });
-        cart.splice(index, 1)
+        console.log(index)
+        if (index !== -1) {
+            log('remove', cart[index].product_name)
+            cart.splice(index, 1)
+        }
+
 
         fs.writeFile('./cart.json', JSON.stringify(cart), (err) => {
             if (err) {
@@ -97,18 +133,32 @@ app.post('/removeToCart', (request, response) => {
                 return;
             }
             response.json({ result: 1 });
-        });
-        const date = new Date()
-        const actionDataObj = {
-            product_name: request.body.item.product_name,
-            action: "Товар удален",
-            time: `В ${date.getHours()} часов ${date.getMinutes()} минут`
-        }
-        actionDataArr.push(actionDataObj)
-        console.log(actionDataArr)
-        fs.writeFileSync('./static.json', JSON.stringify(actionDataArr))
+        })
     });
 });
+
+function log(action, itemName) {
+    fs.readFile('./static.json', 'utf-8', (err, data) => {
+        if (err) {
+            console.log('Error!', err);
+            return;
+        }
+        const date = new Date()
+        const time = `В ${date.getHours()} часов ${date.getMinutes()} минут`
+        const stats = JSON.parse(data);
+        stats.push({
+            action,
+            itemName,
+            time
+        });
+        fs.writeFile('./static.json', JSON.stringify(stats), (err) => {
+            if (err) {
+                console.log('Error!', err);
+                return;
+            }
+        });
+    })
+}
 
 app.listen(3000, () => {
     console.log('Server is running at localhost:3000');
