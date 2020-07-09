@@ -10,10 +10,14 @@
               class="cart-button"
               id =  "cart-icon-container"
               v-on:click="isCartVisible = !isCartVisible">
-      <img id = "cart-icon" src = "public/image/cart-icon.png"
+      <img id = "cart-icon" src = "./../public/image/cart-icon.png"
             alt = "cartimg">
       </button>
-      <Cart v-if="isCartVisible" :cartGoods="cartGoods" />
+     <Cart
+        v-if="isCartVisible"
+        :cartGoods="cartGoods"
+        @removeFromCart="removeFromCart"
+      />
     </Header>
     <Error v-if="isError" />
     <GoodsList
@@ -31,7 +35,8 @@
   import Search from "./components/Search.vue";
   import Cart from "./components/Cart.vue";
   import Error from "./components/Error.vue";
-  const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+  const API =   "http://localhost:3000";
+
   export default {
     name: "App",
     components: {
@@ -52,11 +57,12 @@
     },
     mounted() {
       this.fetchGoods();
+      this.fetchCart();
 
     },
     methods: {
       fetchGoods() {
-        fetch(`${API}/catalogData.json?page=1&sort=price`)
+        fetch(`${API}/catalog`)
                 .then((result) => {
                   return result.json();
                 })
@@ -69,14 +75,78 @@
                 });
       },
 
-      addToCart(item) {
-        this.cartGoods.push(item);
+      fetchCart() {
+        fetch(`${API}/cart`)
+                .then((result) => {
+                  return result.json();
+                })
+                .then((data) => {
+                  this.cartGoods = data;
+                })
+                .catch((err) => {
+                 
+                  console.error(err);
+                });
       },
+
+
+      addToCart(item) {
+        
+    
+      fetch(`${API}/addToCart`, {
+         method: "POST",
+         body: JSON.stringify({ item }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((result) => {
+          return result.json();
+        })
+        .then((data) => {
+          if (data.result) {
+            const cartItem = this.cartGoods.find(({ id_product }) => id_product === item.id_product);
+            if (cartItem !== undefined) {
+                cartItem.quantity += 1;
+            } else {
+                this.cartGoods.push({ ...item, quantity: 1 });
+            }
+          } else {
+            console.error("Can't add item to cart");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+                
+      },
+
       removeFromCart(id) {
-        const index = this.cartGoods.find(({ id_product }) => id_product === id);
-        if (index !== -1) {
-          this.cartGoods.splice(index, 1);
-        }
+       fetch(`${API}/removeFromCart`, {
+        method: "DELETE",
+        body: JSON.stringify({ id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((result) => {
+          return result.json();
+        })
+        .then((data) => {
+          if (data.result) {
+            const index = this.cartGoods.findIndex(
+              ({ id_product }) => id_product === id
+            );
+            if (index !== -1) {
+              this.cartGoods.splice(index, 1);
+            }
+          } else {
+            console.error("Can't remove item from cart");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
       },
       handleCartButtonClick() {
         this.isCartVisible = !this.isCartVisible;
@@ -111,33 +181,25 @@
     cursor: pointer;
     width: 80px;
     height: 80px;
+    border-style: none;
+    border-radius: 50%;
+    padding: 5px;
+    vertical-align: middle;
+    margin-right: 15px;
+    background: #4a642e;
+    right:50px;
+  
 
   }
 
-  #cart-icon {
-    margin-top: 20px;
-    margin-left: 22px;
-  }
-
-
-
-
-
-
-
+  
   #txt-heading {
     margin-top: 0px;
     background-color: rgba(224, 224, 224, 1);
     height: 37px;
     font-weight: lighter;
 
-
   }
-
-
-
-
-
 
   img.cart-item-image {
     width: 30px;
@@ -170,10 +232,6 @@
   }
 
 
-
-
-
-
   .goods-item {
     width: 200px;
     height: 200px;
@@ -183,8 +241,7 @@
     border: #E0E0E0 1px solid;
     text-align: center;
 
-
-  }
+ }
 
   .btnAddAction {
     padding: 5px 10px;
