@@ -12,29 +12,23 @@ describe('Функция sum()', () => {
 
     it('Должна вернуть something wrong при аргументах 3 и null', () => {
         const res = script.sum(3, null);
+        const res2 = script.sum(null, 3);
         expect(res).toBe('something wrong');
-    });
-    it('Должна вернуть something wrong при аргументах null и 3', () => {
-        const res = script.sum(null, 3);
-        expect(res).toBe('something wrong');
+        expect(res2).toBe('something wrong');
     });
 
     it('Должна вернуть something wrong при аргументах undefined и 3', () => {
         const res = script.sum(3, undefined);
+        const res2 = script.sum(undefined, 3);
         expect(res).toBe('something wrong');
-    });
-    it('Должна вернуть calc something wrong при аргументах 3 и undefined', () => {
-        const res = script.sum(undefined, 3);
-        expect(res).toBe('something wrong');
+        expect(res2).toBe('something wrong');
     });
 
     it('Должна вернуть calc can\'t using string! при аргументах 3 и "S"', () => {
         const res = script.sum(3, 'S');
+        const res2 = script.sum('S', 3);
         expect(res).toBe('calc can\'t using string!');
-    });
-    it('Должна вернуть calc can\'t using string! при аргументах "S" и 3', () => {
-        const res = script.sum('S', 3);
-        expect(res).toBe('calc can\'t using string!');
+        expect(res2).toBe('calc can\'t using string!');
     });
 });
 
@@ -50,31 +44,24 @@ describe('Функция sub()', () => {
 
     it('Должна вернуть something wrong при аргументах 3 и null', () => {
         const res = script.sub(3, null);
+        const res2 = script.sub(null, 3);
         expect(res).toBe('something wrong');
-    });
-    it('Должна вернуть something wrong при аргументах null и 3', () => {
-        const res = script.sub(null, 3);
-        expect(res).toBe('something wrong');
+        expect(res2).toBe('something wrong');
     });
 
     it('Должна вернуть something wrong при аргументах undefined и 3', () => {
         const res = script.sub(3, undefined);
+        const res2 = script.sub(undefined, 3);
         expect(res).toBe('something wrong');
-    });
-    it('Должна вернуть calc something wrong при аргументах 3 и undefined', () => {
-        const res = script.sub(undefined, 3);
-        expect(res).toBe('something wrong');
+        expect(res2).toBe('something wrong');
     });
 
     it('Должна вернуть calc can\'t using string! при аргументах 3 и "S"', () => {
         const res = script.sub(3, 'S');
+        const res2 = script.sub('S', 3);
         expect(res).toBe('calc can\'t using string!');
+        expect(res2).toBe('calc can\'t using string!');
     });
-    it('Должна вернуть calc can\'t using string! при аргументах "S" и 3', () => {
-        const res = script.sub('S', 3);
-        expect(res).toBe('calc can\'t using string!');
-    });
-
 });
 
 describe('Функция div()', () => {
@@ -89,29 +76,23 @@ describe('Функция div()', () => {
 
     it('Должна вернуть something wrong при аргументах 3 и null', () => {
         const res = script.div(3, null);
+        const res2 = script.div(null, 3);
         expect(res).toBe('something wrong');
-    });
-    it('Должна вернуть something wrong при аргументах null и 3', () => {
-        const res = script.div(null, 3);
-        expect(res).toBe('something wrong');
+        expect(res2).toBe('something wrong');
     });
 
     it('Должна вернуть something wrong при аргументах undefined и 3', () => {
         const res = script.div(3, undefined);
+        const res2 = script.div(undefined, 3);
         expect(res).toBe('something wrong');
-    });
-    it('Должна вернуть calc something wrong при аргументах 3 и undefined', () => {
-        const res = script.div(undefined, 3);
-        expect(res).toBe('something wrong');
+        expect(res2).toBe('something wrong');
     });
 
     it('Должна вернуть calc can\'t using string! при аргументах 3 и "S"', () => {
         const res = script.div(3, 'S');
+        const res2 = script.div('S', 3);
         expect(res).toBe('calc can\'t using string!');
-    });
-    it('Должна вернуть calc can\'t using string! при аргументах "S" и 3', () => {
-        const res = script.div('S', 3);
-        expect(res).toBe('calc can\'t using string!');
+        expect(res2).toBe('calc can\'t using string!');
     });
 
 });
@@ -128,29 +109,22 @@ describe('Функция mult()', () => {
 
     it('Должна вернуть something wrong при аргументах 3 и null', () => {
         const res = script.mult(3, null);
+        const res2 = script.mult(null, 3);
         expect(res).toBe('something wrong');
-    });
-    it('Должна вернуть something wrong при аргументах null и 3', () => {
-        const res = script.mult(null, 3);
-        expect(res).toBe('something wrong');
+        expect(res2).toBe('something wrong');
     });
 
     it('Должна вернуть something wrong при аргументах undefined и 3', () => {
         const res = script.mult(3, undefined);
+        const res2 = script.mult(undefined, 3);
         expect(res).toBe('something wrong');
-    });
-    it('Должна вернуть calc something wrong при аргументах 3 и undefined', () => {
-        const res = script.mult(undefined, 3);
-        expect(res).toBe('something wrong');
+        expect(res2).toBe('something wrong');
     });
 
     it('Должна вернуть calc can\'t using string! при аргументах 3 и "S"', () => {
         const res = script.mult(3, 'S');
+        const res2 = script.mult('S', 3);
         expect(res).toBe('calc can\'t using string!');
+        expect(res2).toBe('calc can\'t using string!');
     });
-    it('Должна вернуть calc can\'t using string! при аргументах "S" и 3', () => {
-        const res = script.mult('S', 3);
-        expect(res).toBe('calc can\'t using string!');
-    });
-
 });

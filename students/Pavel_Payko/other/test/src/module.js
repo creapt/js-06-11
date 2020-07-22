@@ -1,7 +1,7 @@
 const sum = (x, y) => {
     if (x == null || y == null) {
         return 'something wrong'
-    } else if (typeof x == undefined || typeof y == undefined) {
+    } else if (typeof x == 'undefined' || typeof y == 'undefined') {
         return 'something wrong'
     } else if (typeof x == 'string' || typeof y == 'string') {
         return 'calc can\'t using string!'
@@ -12,7 +12,7 @@ const sum = (x, y) => {
 const sub = (x, y) => {
     if (x == null || y == null) {
         return 'something wrong'
-    } else if (typeof x == undefined || typeof y == undefined) {
+    } else if (typeof x == 'undefined' || typeof y == 'undefined') {
         return 'something wrong'
     } else if (typeof x == 'string' || typeof y == 'string') {
         return 'calc can\'t using string!'
@@ -22,7 +22,7 @@ const sub = (x, y) => {
 const div = (x, y) => {
     if (x == null || y == null) {
         return 'something wrong'
-    } else if (typeof x == undefined || typeof y == undefined) {
+    } else if (typeof x == 'undefined' || typeof y == 'undefined') {
         return 'something wrong'
     } else if (typeof x == 'string' || typeof y == 'string') {
         return 'calc can\'t using string!'
@@ -34,7 +34,7 @@ const div = (x, y) => {
 const mult = (x, y) => {
     if (x == null || y == null) {
         return 'something wrong'
-    } else if (typeof x == undefined || typeof y == undefined) {
+    } else if (typeof x == 'undefined' || typeof y == 'undefined') {
         return 'something wrong'
     } else if (typeof x == 'string' || typeof y == 'string') {
         return 'calc can\'t using string!'
