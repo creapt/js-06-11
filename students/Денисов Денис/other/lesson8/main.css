@@ -1,0 +1,79 @@
+div,
+p,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    width: 100%;
+}
+
+.container {
+    width: 95%;
+    margin: 0 auto;
+}
+
+.calc {
+    width: 300px;
+    height: 285px;
+    margin: 0 auto;
+    margin-top: 50px;
+    border: 1px solid #333;
+}
+
+.calc_screen {
+    width: 95%;
+    margin: 5px auto;
+    display: flex;
+    justify-content: space-around
+}
+
+.screen {
+    width: 225px;
+    border: 1px solid #6d4a11;
+    height: 50px;
+}
+
+.clear_btn {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #6d4a11;
+    cursor: pointer;
+}
+
+.calc_btns {
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+}
+
+.culc_digit__btns {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 85%;
+    height: 200px;
+}
+
+.culc_action__btns {
+    height: 200px;
+    width: 20%;
+}
+
+.btn {
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #333;
+    height: 40px;
+}
+
+.digit_btn {
+    width: 30%;
+}
